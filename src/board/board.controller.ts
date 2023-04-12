@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UsePipes, ValidationPipe} from '@nestjs/common';
 import {BoardsService} from "./board.service";
 import {BoardStatus} from "./board-status.enum";
 import {CreateBoardDto} from "./dto/createBoard.dto";
@@ -10,16 +10,10 @@ import { Board } from './board.entity';
 export class BoardsController {
     constructor(private boardsService: BoardsService) {}
 
-    // @Get('/')
-    // getAllBoard():Board[] {
-    //     return this.boardsService.getAllBoards();
-    // }
-
-    // @Post()
-    // @UsePipes(ValidationPipe)
-    // addBoard(@Body() addBoardDto: addBoardDto): Board{
-    //     return this.boardsService.addBoard(addBoardDto);
-    // }
+    @Get('/')
+    getAllBoard():Promise<Board[]> {
+        return this.boardsService.getAllBoards();
+    }
 
     @Post()
     @UsePipes(ValidationPipe)
@@ -32,21 +26,16 @@ export class BoardsController {
         return this.boardsService.getBoardById(bId);
     }
 
+    @Delete('/:id')
+    deleteBoard(@Param('id', ParseIntPipe) bId:number):Promise<void>{
+        return this.boardsService.deleteBoard(bId);
+    }
 
-    // @Get('/:id')
-    // getBoardById(@Param('id') bId: string): Board{
-    //     return this.boardsService.getBoardById(bId);
-    // }
-
-    // @Delete('/:id')
-    // deleteBoard(@Param('id') bId: string):void{
-    //     this.boardsService.deleteBoard(bId);
-    // }
     
-    // @Patch('/:id/status')
-    // updateBoardStatus(@Param('id') bId: string, 
-    //                   @Body('status', BoardStatusValidationPipe) status: BoardStatus){
-    //         return this.boardsService.updateBoardStatus(bId,status);
-    // }
+    @Patch('/:id/status')
+    updateBoardStatus(@Param('id',ParseIntPipe) bId: number, 
+                      @Body('status', BoardStatusValidationPipe) status: BoardStatus){
+            return this.boardsService.updateBoardStatus(bId,status);
+    }
     
 }

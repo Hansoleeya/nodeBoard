@@ -4,6 +4,7 @@
  import {CreateBoardDto} from "./dto/createBoard.dto";
 import { BoardRepository } from './board.repository';
 import { Board } from './board.entity';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class BoardsService {
@@ -11,27 +12,11 @@ export class BoardsService {
         private boardRepository: BoardRepository,
     ){}
 
-
-    // getAllBoards(): Board[]{
-    //     return this.boards;
-    // }
-
-    // addBoard(addBoardDto : addBoardDto){
-    //     const {bTitle, description} = addBoardDto;
-
-    //     const board: Board = {
-    //         bId : uuid(),
-    //         bTitle,
-    //         description,
-    //         status: BoardStatus.PUBLIC
-    //     }
-
-    //     this.boards.push(board);
-    //     return board;
-    // }
+    async getAllBoards(): Promise<Board[]>{
+        return this.boardRepository.find();
+    }
 
     createBoard(CreateBoardDto: CreateBoardDto): Promise<Board>{
-        
         return this.boardRepository.createBoard(CreateBoardDto);
     }
 
@@ -43,25 +28,21 @@ export class BoardsService {
         return found;
     }
 
-    // getBoardById(bId: string):Board{
-    //     const found = this.boards.find((board) => board.bId == bId);
-        
-    //     if(!found){
-    //         throw new NotFoundException(`Can't find Board with id ${bId}`);
-    //     }
-        
-    //     return found;
-    // }
+    async deleteBoard(bId: number):Promise<void>{
+        const result = await this.boardRepository.delete(bId);
 
-    // deleteBoard(bId: string): void{
-    //     const found = this.getBoardById(bId);
-    //     this.boards.filter((board)=> board.bId !== found.bId);
-    // }
+        if(result.affected === 0){
+            throw new NotFoundException(`Can't find Board with id ${bId}`);
+        }
+        
+    }
 
-    // updateBoardStatus(bId: string, status: BoardStatus): Board{
-    //     const board = this.getBoardById(bId);
-    //     board.status = status;
-    //     return board;
-    // }
+    async updateBoardStatus(id:number, status:BoardStatus):Promise<Board>{
+        const board = await this.getBoardById(id);
+        board.bStatus = status;
+        await this.boardRepository.save(board);
+
+        return board;
+    }
 
 }

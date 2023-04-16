@@ -1,14 +1,25 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { type } from "os";
+import { Board } from "src/board/board.entity";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity()
-@Unique(['username'])
+@Unique(['userId'])
 export class User extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
+
+    @PrimaryColumn()
+    userId: string;
 
     @Column()
     username: string;
 
     @Column()
     password: string;
+
+    @Column({default: true})
+    isActive: boolean;
+
+    @OneToMany(type => Board, board => board.user, {eager: true })
+    boards: Board[];
 }

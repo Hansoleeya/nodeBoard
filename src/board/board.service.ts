@@ -1,8 +1,9 @@
  import { Injectable, NotFoundException } from '@nestjs/common';
  import {BoardStatus} from "./board-status.enum";
  import {CreateBoardDto} from "./dto/createBoard.dto";
- import { BoardRepository } from './board.repository';
+ import { BoardRepository } from '../repository/board.repository';
  import { Board } from './board.entity';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class BoardsService {
@@ -10,31 +11,41 @@ export class BoardsService {
         private boardRepository: BoardRepository,
     ){}
 
+    // 게시글 전체 목록
     async getAllBoards(): Promise<Board[]>{
         return this.boardRepository.find();
     }
 
-    createBoard(CreateBoardDto: CreateBoardDto): Promise<Board>{
-        return this.boardRepository.createBoard(CreateBoardDto);
+    // 게시글 생성
+    createBoard(createBoardDto: CreateBoardDto, user:User): Promise<Board>{
+        return this.boardRepository.createBoard(createBoardDto, user);
     }
 
-    async getBoardById(bId: number): Promise<Board>{
-        const found = await this.boardRepository.findOneBy({bId});
+    // 게시글 상세정보
+    async getBoardById(id: number): Promise<Board>{
+        const found = await this.boardRepository.findOneBy({id});
         if(!found){
-            throw new NotFoundException(`게시글 번호 ${bId}를 찾을 수 없습니다.`);
+            throw new NotFoundException(`게시글 번호 ${id}를 찾을 수 없습니다.`);
         }
         return found;
     }
 
-    async deleteBoard(bId: number):Promise<void>{
-        const result = await this.boardRepository.delete(bId);
+    //게시글 삭제
+    async deleteBoard(id: number,user:User):Promise<void>{
+        const result = await this.boardRepository.delete({
+            id,
+            user:{
+            id: user.id,
+            },
+        });
 
         if(result.affected === 0){
-            throw new NotFoundException(`게시글 번호 ${bId} 가 존재하지 않아 삭제할 수 없습니다.`);
+            throw new NotFoundException(`게시글 번호 ${id} 가 존재하지 않아 삭제할 수 없습니다.`);
         }
         
     }
 
+    // 게시글 수정
     async updateBoardStatus(id:number, status:BoardStatus):Promise<Board>{
         const board = await this.getBoardById(id);
         board.bStatus = status;

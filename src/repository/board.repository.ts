@@ -18,8 +18,9 @@ export class BoardRepository extends Repository<Board> {
             content,
             bStatus:BoardStatus.PUBLIC,
             writeDate:Date(),
+            updateDate:Date(),
             user:user
-        })
+        });
         await this.save(board);
         return board;
     }

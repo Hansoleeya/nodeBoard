@@ -1,3 +1,4 @@
+import { User } from "src/auth/user.entity";
 import { Board } from "src/board/board.entity";
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -9,7 +10,13 @@ export class Reply extends BaseEntity{
     @Column()
     content:string;
 
+    @Column()
+    writeDate: Date;
+
     @ManyToOne(type => Board, board => board.replys, {eager:false})
     board: Board;
+
+    @ManyToOne(type => User, user => user.reply, {eager:false} )
+    user: User;
 
 }

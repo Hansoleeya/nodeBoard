@@ -1,0 +1,8 @@
+  db:
+    host: 'nodedb.cfuchxnx93nv.us-east-1.rds.amazonaws.com'
+    username: 'admin'
+    password: 'Gksthfdl2'
+    synchronize: true
+
+  jwt:
+    secret: 'hansol'

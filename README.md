@@ -18,5 +18,4 @@
 | boards/:id/status | Patch  | 게시글 공개/비공개 수정 |
 | boards/:id/reply  | Post   | 댓글 작성         |
 
-자동배포테스트
 

@@ -7,7 +7,8 @@ on:
 
 # 환경설정
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/nodeboard
+  #DOCKER_IMAGE: ghcr.io/${{ github.actor }}/nodeboard
+  DOCKER_IMAGE: nodeboard
   VERSION: ${{ github.sha }}
   NAME: go_cicd
 
@@ -42,9 +43,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          push: true
-          tags: nodeboard:latest
-          #tags: ${{ env.DOCKER_IMAGE }}:latest
+          push: true        
+          tags: ${{ env.DOCKER_IMAGE }}:latest
   # 배포 Job
   deploy:
     needs: build  # build 후에 실행되도록 정의

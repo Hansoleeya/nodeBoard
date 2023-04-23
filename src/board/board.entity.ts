@@ -18,6 +18,9 @@ export class Board extends BaseEntity{
     bStatus: BoardStatus;
 
     @Column()
+    delYN: string;
+
+    @Column()
     writeDate: Date;
 
     @Column()

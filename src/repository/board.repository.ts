@@ -17,6 +17,7 @@ export class BoardRepository extends Repository<Board> {
             title,
             content,
             bStatus:BoardStatus.PUBLIC,
+            delYN : "N",
             writeDate:Date(),
             updateDate:Date(),
             user:user

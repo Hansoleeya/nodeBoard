@@ -12,15 +12,13 @@ env:
   NAME: go_cicd
 
 jobs:
-  build-and-push-image:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
   # 빌드 Job
   build:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       # github repository에서 checkout
       - uses: actions/checkout@v2

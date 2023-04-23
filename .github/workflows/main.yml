@@ -7,7 +7,7 @@ on:
 
 # 환경설정
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/nodeBoard
+  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/nodeboard
   VERSION: ${{ github.sha }}
   NAME: go_cicd
 

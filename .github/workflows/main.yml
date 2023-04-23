@@ -12,6 +12,11 @@ env:
   NAME: go_cicd
 
 jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
   # 빌드 Job
   build:
     name: Build

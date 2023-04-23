@@ -4,6 +4,7 @@
 * typeorm : 0.3.14
 * mysql : 3.2.0
 
+* 퍼블릭 IPv4 주소 : 43.200.175.210
 # URL
 
 | url               | method | 기능            |
